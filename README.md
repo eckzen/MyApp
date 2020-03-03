@@ -1,38 +1,29 @@
 # MyApp
-01_database
+02_models
 
-- setup postgres
+- pols/models.py
 
-$ psql
+from django.db import models
 
-$ CREATE DATABASE polls;
+class Question(models.Model):
 
-$ \l
+    question_text = models.Charfield(max_length=200)
+    
+    pub_date = models.DateTimeField('date published')
 
-$ALTER DATABASE name OWNER TO new_owner;
 
+class Choice(models.Model):
+
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    
+    choice_text = models.CharField(max_length=200)
+    
+    votes = models.IntegerField(default=0)
+    
 - myapp/settings.py
 
-DATABASES = {
+INSTALLED_APPS = [
 
-    'default': {
-    
-        'ENGINE': 'django.db.backends.postgresql',
-        
-        'NAME': 'polls',
-        
-        'USER': 'postgres',
-        
-        'PASSWORD': 'postgres',
-        
-        'HOST': 'localhost',
-        
-        'PORT': '5432',
-    }
-}
+    'polls.apps.PollsConfig',
+]
 
-$ python manage.py runserver
-
-$ python manage.py migrate
-
-$ python manage.py createsuperuser
