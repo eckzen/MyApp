@@ -27,3 +27,6 @@ INSTALLED_APPS = [
     'polls.apps.PollsConfig',
 ]
 
+$ python manage.py makemigrations
+
+$ python manage.py migrate
