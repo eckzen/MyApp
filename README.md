@@ -1,8 +1,30 @@
 # MyApp
-Django Web App
 
-$ django-admin startproject mysite
+00_view
 
-$ python manage.py runserver
+- polls/views.py
 
-$ python manage.py startapp polls
+from django.http import HttpResponse
+
+def index(request):
+return HttpResponse("Hello, world. You're at the polls index")
+
+- polls/urls.py
+
+from django.urls import path
+
+from . import views
+
+urlpatterns = [
+path('', views.index, name='index'),
+]
+
+- mysite/urls.py
+
+from django.urls import path,include
+
+urlpatterns = [
+path('admin/', admin.site.urls),
+path('polls/', include('polls.urls')),
+]
+
