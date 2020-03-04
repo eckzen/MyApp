@@ -1,26 +1,21 @@
 # MyApp
-08_Raise404
+07_render
 
 - polls/views.py
 
 from django.shortcuts import render
 
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse
 
 from .models import Question
 
-
-    def index(request, question_id):
+    def index(request):
     
-        try:
+        latest_question_list = Question.objects.order_by('-pub_date')[:5]
         
-            question = Question.objects.get(pk=question_id)
-            
-        except Question.DoesNotExist:
+        context = {'latest_question_list': latest_question_list}
         
-            raise Http404("Question does not exist")
-            
-        return render(request, 'polls/index.html', {'question': question})
+        return render(request, 'polls/index.html', context)
 
 
     def detail(request, question_id):
