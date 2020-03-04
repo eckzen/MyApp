@@ -1,31 +1,27 @@
 # MyApp
-08_raise404
+09_get_object_404
 
 - polls/views.py
 
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse
 
 from .models import Question
 
 
     def index(request, question_id):
     
-        try:
+        question = get_object_or_404(Question, pk=question_id)
         
-            question = Question.objects.get(pk=question_id)
-            
-        except Question.DoesNotExist:
-        
-            raise Http404("Question does not exist")
-            
         return render(request, 'polls/index.html', {'question': question})
 
 
     def detail(request, question_id):
     
-        return HttpResponse("You're looking at question %s." % question_id)
+        question = get_object_or_404(Question, pk=question_id)
+        
+        return render(request, 'polls/detail.html', {'question': question})
 
 
     def results(request, question_id):
@@ -39,25 +35,16 @@ from .models import Question
     
         return HttpResponse("You're voting on a question %s" % question_id)
         
-- polls/templates/polls/index.html
+- polls/templates/polls/detail.html
 
-    {% if latest_question_list %}
+    <h1>{{ question }}</h1>
     
     <ul>
     
-      {% for question in latest_question_list %}
-      
-          <li><a href="/polls/{{ question.id }}/">{{ question.question_text }}</a></li>
-          
-      {% endfor %}
-      
-    </ul>
+    {% for choice in question.choice_set.all %}
     
-    {% else %}
-    
-        <p>No polls are available</p>
+        <li>{{ choice.choice_text }} </li>
         
-    {% endif %}
-
-
-
+    {% endfor %}
+    
+    </ul>
