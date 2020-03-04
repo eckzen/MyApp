@@ -6,9 +6,9 @@
 
 from django.http import HttpResponse
 
-def index(request):
+  def index(request):
 
-return HttpResponse("Hello, world. You're at the polls index")
+  return HttpResponse("Hello, world. You're at the polls index")
 
 - polls/urls.py
 
@@ -16,21 +16,21 @@ from django.urls import path
 
 from . import views
 
-urlpatterns = [
+  urlpatterns = [
 
-path('', views.index, name='index'),
+    path('', views.index, name='index'),
 
-]
+  ]
 
 - mysite/urls.py
 
 from django.urls import path,include
 
-urlpatterns = [
+  urlpatterns = [
 
-path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls),
 
-path('polls/', include('polls.urls')),
+    path('polls/', include('polls.urls')),
 
-]
+  ]
 
