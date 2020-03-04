@@ -1,14 +1,27 @@
 # MyApp
-05_webpages
+06_template
 
 - polls/views.py
 
 from django.http import HttpResponse
 
+from django.template import loader
+
+from .models import Question
 
     def index(request):
     
-        return HttpResponse("Hello, world. You're at the polls index")
+        latest_question_list = Question.objects.order_by('-pub_date')[:5]
+        
+        template = loader.get_template('polls/index.html')
+        
+        context = {
+        
+            'latest_question_list': latest_question_list,
+            
+        }
+        
+        return HttpResponse(template.render(context, request))
 
 
     def detail(request, question_id):
@@ -27,22 +40,25 @@ from django.http import HttpResponse
     
         return HttpResponse("You're voting on a question %s" % question_id)
         
-        
-- polls/urls.py
+- polls/templates/polls/index.html
 
-from django.urls import path
-
-from . import views
-
-    urlpatterns = [
+    {% if latest_question_list %}
     
-        path('', views.index, name='index'),
+    <ul>
+    
+      {% for question in latest_question_list %}
+      
+          <li><a href="/polls/{{ question.id }}/">{{ question.question_text }}</a></li>
+          
+      {% endfor %}
+      
+    </ul>
+    
+    {% else %}
+    
+        <p>No polls are available</p>
         
-        path('<int:question_id>/', views.detail, name='detail'),
-        
-        path('<int:question_id>/results/', views.results, name='results'),
-        
-        path('<int:question_id>/vote/', views.vote, name='vote'),
-        
-    ]
+    {% endif %}
+
+
 
